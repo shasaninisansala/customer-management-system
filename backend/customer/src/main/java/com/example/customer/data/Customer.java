@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -11,7 +12,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column (name = "name")
     private String name;
@@ -22,7 +23,13 @@ public class Customer {
     @Column (name = "nic")
     private String nic;
 
-    public int getId() {
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<MobileNumber> mobileNumbers;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Address> addresses;
+
+    public Integer getId() {
         return id;
     }
 
@@ -52,5 +59,21 @@ public class Customer {
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+    public List<MobileNumber> getMobileNumbers() {
+        return mobileNumbers;
+    }
+
+    public void setMobileNumbers(List<MobileNumber> mobileNumbers) {
+        this.mobileNumbers = mobileNumbers;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 }
