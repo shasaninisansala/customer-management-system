@@ -29,6 +29,9 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Address> addresses;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<FamilyRelation> familyRelations;
+
     public Integer getId() {
         return id;
     }
@@ -75,5 +78,13 @@ public class Customer {
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
+    }
+
+    public List<FamilyRelation> getFamilyRelations(){
+        return familyRelations;
+    }
+
+    public void setFamilyRelations(List<FamilyRelation> familyRelations) {
+        this.familyRelations = familyRelations;
     }
 }
