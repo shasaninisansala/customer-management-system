@@ -1,13 +1,13 @@
 # customer-management-system
 
 # Tech stack
-🔹Frontend
-    React.js
-    Axios
-    Tailwind CSS
-🔹Backend
-    Spring Boot
-    MariaDB
+    🔹Frontend
+        React.js
+        Axios
+        Tailwind CSS
+    🔹Backend
+        Spring Boot
+        MariaDB
 # Features
 
     ➕ Add new customers
@@ -21,30 +21,30 @@
     📂 Excel file upload for bulk customer import
     🔍 DTO-based clean data transfer to frontend
 
-## Run
-Steps:
-git clone ...
+# Run
+    Steps:
+    git clone ...
 
-# Backend
---open sql file using mariaDB
---create DB 
---run SQL
+    ## Backend
+    --open sql file using mariaDB
+    --create DB 
+    --run SQL
 
---open backend code using Intellij IDEA
---Configure Database
-    spring.datasource.url=jdbc:mysql://localhost:3306/customer_db
-    spring.datasource.username=root
-    spring.datasource.password=your_password
-    spring.jpa.hibernate.ddl-auto=update
+    --open backend code using Intellij IDEA
+    --Configure Database
+        spring.datasource.url=jdbc:mysql://localhost:3306/customer_db
+        spring.datasource.username=root
+        spring.datasource.password=your_password
+        spring.jpa.hibernate.ddl-auto=update
 
---start Spring Boot
---Backend runs at: http://localhost:8080
+    --start Spring Boot
+    --Backend runs at: http://localhost:8080
 
-# Frontend
-cd frontend
-1. Install dependencies
-npm install
-2. Run React app
-npm start
+    ## Frontend
+    cd frontend
+    1. Install dependencies
+    npm install
+    2. Run React app
+    npm start
 
-Frontend runs at: http://localhost:3000
+    Frontend runs at: http://localhost:3000
