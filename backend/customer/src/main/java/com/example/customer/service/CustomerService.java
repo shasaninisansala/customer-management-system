@@ -1,6 +1,7 @@
 package com.example.customer.service;
 
 import com.example.customer.data.*;
+import com.example.customer.dto.CustomerDTO;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -14,6 +15,7 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -71,34 +73,37 @@ public class CustomerService {
         existingCustomer.setDob(customer.getDob());
         existingCustomer.setNic(customer.getNic());
 
+        existingCustomer.getMobileNumbers().clear();
+        existingCustomer.getAddresses().clear();
+        existingCustomer.getFamilyRelations().clear();
+
         if (customer.getMobileNumbers() != null) {
             for (MobileNumber mobile : customer.getMobileNumbers()) {
+                mobile.setId(null);
                 mobile.setCustomer(existingCustomer);
+                existingCustomer.getMobileNumbers().add(mobile);
             }
-            existingCustomer.setMobileNumbers(customer.getMobileNumbers());
         }
 
         if (customer.getAddresses() != null) {
             for (Address address : customer.getAddresses()) {
+                address.setId(null);
                 address.setCustomer(existingCustomer);
+                existingCustomer.getAddresses().add(address);
             }
-            existingCustomer.setAddresses(customer.getAddresses());
         }
 
         if (customer.getFamilyRelations() != null) {
             for (FamilyRelation relation : customer.getFamilyRelations()) {
+                relation.setId(null);
                 relation.setCustomer(existingCustomer);
+                existingCustomer.getFamilyRelations().add(relation);
             }
-            existingCustomer.setFamilyRelations(customer.getFamilyRelations());
         }
 
         return customerRepo.save(existingCustomer);
     }
 
-    // get all customers
-    public List<Customer> getAllCustomers() {
-        return customerRepo.findAll();
-    }
 
     //get customer by id
     public Customer getCustomerById(Integer id) {
@@ -163,5 +168,66 @@ public class CustomerService {
             throw new RuntimeException("Excel upload failed: " + e.getMessage());
         }
     }
+    public List<CustomerDTO> getAllCustomers() {
 
+        List<Customer> customers = customerRepo.findAll();
+
+        return customers.stream().map(c -> {
+
+            CustomerDTO dto = new CustomerDTO();
+
+            dto.setId(c.getId());
+            dto.setName(c.getName());
+            dto.setDob(c.getDob());
+            dto.setNic(c.getNic());
+
+            // mobile numbers
+            dto.setMobileNumbers(
+                    c.getMobileNumbers() == null ? List.of()
+                            : c.getMobileNumbers()
+                            .stream()
+                            .map(MobileNumber::getMobileNumber)
+                            .toList()
+            );
+
+            // addresses
+            dto.setAddresses(
+                    c.getAddresses() == null ? List.of()
+                            : c.getAddresses().stream()
+                            .map(a ->
+                                    a.getAddressLine1() +
+                                            (a.getAddressLine2() != null ? ", " + a.getAddressLine2() : "")
+                            )
+                            .toList()
+            );
+
+            // family members
+            dto.setFamilyMembers(
+                    c.getFamilyRelations() == null ? List.of()
+                            : c.getFamilyRelations()
+                            .stream()
+                            .map(f -> f.getFamilyMember().getName())
+                            .toList()
+            );
+
+            dto.setCities(
+                    c.getAddresses() == null ? List.of()
+                            : c.getAddresses().stream()
+                            .map(a -> a.getCity() != null ? a.getCity().getCityName() : null)
+                            .filter(Objects::nonNull)
+                            .toList()
+            );
+
+            dto.setCountries(
+                    c.getAddresses() == null ? List.of()
+                            : c.getAddresses().stream()
+                            .map(a -> a.getCountry() != null ? a.getCountry().getCountryName() : null)
+                            .filter(Objects::nonNull)
+                            .toList()
+            );
+
+            return dto;
+
+        }).toList();
+    }
 }

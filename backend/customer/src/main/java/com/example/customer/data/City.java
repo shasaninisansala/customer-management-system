@@ -1,5 +1,6 @@
 package com.example.customer.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class City {
     @Column(name = "city_name", nullable = false)
     private String cityName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "city")
     private List<Address> addresses;
 

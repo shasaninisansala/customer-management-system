@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input {
+  @apply border p-2 w-full mb-2;
+}
+.btn {
+  @apply bg-green-500 px-3 py-1 rounded;
+}
+.btn-primary {
+  @apply bg-blue-500 text-white px-3 py-1 rounded;
+}
+.btn-cancel {
+  @apply bg-red-500 text-white px-3 py-1 rounded;
+}
